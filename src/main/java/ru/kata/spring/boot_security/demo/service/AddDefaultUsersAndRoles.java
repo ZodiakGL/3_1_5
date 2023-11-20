@@ -37,7 +37,6 @@ public class AddDefaultUsersAndRoles {
     }
 
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
     }
 

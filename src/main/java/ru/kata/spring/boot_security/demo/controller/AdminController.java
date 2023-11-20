@@ -34,7 +34,7 @@ public class AdminController {
 		}
 	}
 
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<User> getUser (@PathVariable("id") Long id) {
 		User user = userService.getUserById(id);
 		return user != null
@@ -42,25 +42,20 @@ public class AdminController {
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping("/create")
+	@PostMapping()
 	public ResponseEntity<User> create(@RequestBody User user) {
-		System.out.println("User added");
-		userService.updateUser(user);
+		userService.save(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PutMapping("/edit")
-	public ResponseEntity<User> editUser(@RequestBody User user, @RequestParam("listRoles") ArrayList<Long> roles) {
-		if(roles != null) {
-			user.setRoles(roleService.findByIdRoles(roles));
-		} else {
-			user.setRoles(roleService.getRolesByUserId(user.getId()));
-		}
-		userService.updateUser(user);
+	@PatchMapping("/{id}")
+	public ResponseEntity<User> editUser(@PathVariable("id") String id, @RequestBody User user) {
+		System.out.println(id);
+		userService.updateUser(Long.valueOf(id), user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
 		userService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

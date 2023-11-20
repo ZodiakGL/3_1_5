@@ -25,7 +25,7 @@ public interface UserService {
 
     User passwordCoder(User user);
 
-    public void updateUser (User user);
+    public void updateUser (Long id, User user);
 
     Role findById (Long id);
 

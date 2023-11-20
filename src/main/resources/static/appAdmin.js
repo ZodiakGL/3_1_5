@@ -76,7 +76,7 @@ async function newUser() {
                 name: form.roles.options[i].name
             })
         }
-        fetch("http://localhost:8080/api/admin/create", {
+        fetch("http://localhost:8080/api/admin", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -105,9 +105,10 @@ $('#edit').on('show.bs.modal', ev => {
 async function showEditModal(id) {
     let user = await getUser(id);
     let form = document.forms["formEditUser"];
+    form.id.value = user.id;
     form.name.value = user.name;
-    form.mail.value = user.mail;
     form.password.value = user.password;
+    form.mail.value = user.mail;
 
     $('#rolesEditUser').empty();
 
@@ -151,9 +152,8 @@ function editUser() {
             body: JSON.stringify({
                 id: editForm.id.value,
                 name: editForm.name.value,
-                surname: editForm.surname.value,
-                username: editForm.username.value,
                 password: editForm.password.value,
+                mail: editForm.mail.value,
                 roles: editUserRoles
             })
         }).then(() => {
@@ -172,6 +172,7 @@ $('#delete').on('show.bs.modal', ev => {
 async function showDeleteModal(id) {
     let user = await getUser(id);
     let form = document.forms["formDeleteUser"];
+    form.id.value = user.id;
     form.name.value = user.name;
     form.mail.value = user.mail;
     form.password.value = user.password;
@@ -203,7 +204,7 @@ function deleteUser() {
     const deleteForm = document.forms["formDeleteUser"];
     deleteForm.addEventListener("submit", ev => {
         ev.preventDefault();
-        fetch("http://localhost:8080/api/admin/delete" + deleteForm.id.value, {
+        fetch("http://localhost:8080/api/admin/" + deleteForm.id.value, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

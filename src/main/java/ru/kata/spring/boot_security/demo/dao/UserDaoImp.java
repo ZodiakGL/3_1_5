@@ -51,7 +51,7 @@ public class UserDaoImp implements UserDao{
 
     @Override
     public void save (User user) {
-        entityManager.persist(user);
+        entityManager.merge(user);
     }
 
     @Override
@@ -65,10 +65,6 @@ public class UserDaoImp implements UserDao{
                 "join fetch u.roles where u.name = :name", User.class));
         q.setParameter("name", name);
         return q.getResultList().stream().findFirst().orElse(null);
-    }
-    @Override
-    public void updateUser(User user) {
-        entityManager.merge(user);
     }
 
 }

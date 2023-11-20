@@ -69,13 +69,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return user;
     }
     @Override
-    public void updateUser (User user) {
-        if (user.getId() == null) {
-            userDao.updateUser(passwordCoder(user));
-        }
-        else {
-            userDao.updateUser(user);
-        }
+    public void updateUser (Long id, User user) {
+        User oldUser = getUserById(id);
+        oldUser.setName(user.getName());
+        oldUser.setMail(user.getMail());
+        oldUser.setRoles(user.getRoles());
+        userDao.save(user);
     }
     @Override
     public User getUserByLogin(String name) {
@@ -84,6 +83,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
